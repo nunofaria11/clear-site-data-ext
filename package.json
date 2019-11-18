@@ -1,0 +1,33 @@
+{
+  "name": "clear-site-data-ext",
+  "version": "0.0.1",
+  "description": "Browser extension to clear site data",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nunofaria11/clear-site-data-ext.git"
+  },
+  "keywords": [
+    "browser",
+    "extension",
+    "clear",
+    "site",
+    "data",
+    "storage",
+    "database",
+    "db",
+    "localStorage",
+    "sessionStorage",
+    "cookies",
+    "indexeddb"
+  ],
+  "author": "Nuno Faria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nunofaria11/clear-site-data-ext/issues"
+  },
+  "homepage": "https://github.com/nunofaria11/clear-site-data-ext#readme"
+}
