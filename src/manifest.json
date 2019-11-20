@@ -1,0 +1,40 @@
+{
+    "name": "Clear site data",
+    "version": "1.0.2",
+    "description": "Browser extension to clear site data",
+    "author": "Nuno Faria",
+    "homepage_url": "https://github.com/nunofaria11/close-other-tabs-ext",
+    "manifest_version": 2,
+    "permissions": [
+        "contextMenus",
+        "tabs"
+    ],
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "browser_action": {
+        "default_icon": {
+            "16": "icons/eraser_16.png",
+            "32": "icons/eraser_32.png",
+            "64": "icons/eraser_64.png"
+        }
+    },
+    "icons": {
+        "16": "icons/eraser_16.png",
+        "32": "icons/eraser_32.png",
+        "64": "icons/eraser_64.png"
+    }
+}
