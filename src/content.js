@@ -1,39 +1,3 @@
-function onMessage(request, sender, sendResponse) {
-    console.log("On message", [request, sender]);
-
-    clearSiteData(request).then(
-        r => sendResponse({response: r}),
-        e => sendResponse({error: e}),
-    );
-}
-
-function clearSiteData(options) {
-    const promises = [];
-
-    options = options || {};
-
-    if (options.local_storage && window.localStorage) {
-        window.localStorage.clear();
-        promises.push(Promise.resolve());
-    }
-
-    if (options.session_storage && window.sessionStorage) {
-        window.sessionStorage.clear();
-        promises.push(Promise.resolve());
-    }
-
-    if (options.indexed_db && window.indexedDB) {
-        promises.push(clearIndexedDB());
-    }
-
-    if (options.cookies) {
-        clearCookies();
-        promises.push(Promise.resolve());
-    }
-
-    return Promise.all(promises);
-}
-
 function clearIndexedDB() {
 
     if (!window.indexedDB.databases) {
@@ -41,14 +5,16 @@ function clearIndexedDB() {
         return Promise.reject();
     }
 
-    // todo: close databases?
-
     // clear all databases
     return window.indexedDB.databases().then(
         databases => {
-            return databases.map(db => promisifyRequest(window.indexedDB.deleteDatabase(db.name)));
+            return databases.map(db => deleteDatabase(db.name));
         }
     )
+}
+
+function deleteDatabase(name) {
+    return promisifyRequest(window.indexedDB.deleteDatabase(db.name)).then(() => );
 }
 
 function promisifyRequest(request) {
@@ -69,4 +35,39 @@ function clearCookies() {
     }
 }
 
-chrome.runtime.onMessage.addListener(onMessage);
+function clearSiteData(options) {
+    const promises = [];
+
+    options = options || {};
+
+    if (options.local_storage && window.localStorage) {
+        console.log("Clearing localStorage...");
+        window.localStorage.clear();
+        promises.push(Promise.resolve());
+    }
+
+    if (options.session_storage && window.sessionStorage) {
+        console.log("Clearing sessionStorage...");
+        window.sessionStorage.clear();
+        promises.push(Promise.resolve());
+    }
+
+    if (options.indexed_db && window.indexedDB) {
+        console.log("Clearing indexedDB...");
+        promises.push(clearIndexedDB());
+    }
+
+    if (options.cookies) {
+        console.log("Clearing cookies...");
+        clearCookies();
+        promises.push(Promise.resolve());
+    }
+
+    console.log("Clearing site data...", promises);
+    return Promise.all(promises);
+}
+
+chrome.runtime.onMessage.addListener(function (request, sender) {
+    console.log("On message", [request, sender]);
+    return clearSiteData(request);
+});

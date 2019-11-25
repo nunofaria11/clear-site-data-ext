@@ -30,13 +30,10 @@ function clearSiteData(currentTab) {
         cookies: true
     };
 
-    browser.tabs.sendMessage(currentTab.id, data, null, onClearedSiteDataResponse);
-}
-
-function onClearedSiteDataResponse(response) {
-    if (response.error) {
-        console.error("An error occurred on page:", response.error);
-        return;
-    }
-    console.log("Cleared site data.", response);
+    browser.tabs.query({currentWindow: true, active: true}).then((tabs => {
+        for (let tab of tabs) {
+            browser.tabs.sendMessage(tab.id, data);
+        }
+    }));
+    
 }
